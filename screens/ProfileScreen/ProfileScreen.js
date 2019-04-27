@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import Avatar from "../../components/Avatar";
+import RadioButtons from "../../components/RadioButtons/RadioButtons";
 
 class ProfileScreen extends Component {
   state = {
     name: 'Wiktor',
     height: '180',
-    birthDate: '01.01.1999'
+    birthDate: '01.01.1999',
+    gender: ''
   };
 
   onChangeName = (val) => {
@@ -25,11 +28,18 @@ class ProfileScreen extends Component {
   onPressButton = () => {
     console.log(this.state);
   };
+
+  onRadioPress = (value) => {
+    console.log(value);
+    this.setState({gender: value});
+  };
+
   render() {
-    const { name, height, birthDate } = this.state;
+    const { name, height, birthDate, gender } = this.state;
     return (
       <View style={styles.mainView}>
         <View style={styles.container}>
+          <Avatar/>
           <Input
             onChangeText={this.onChangeName}
             label="Name"
@@ -50,6 +60,7 @@ class ProfileScreen extends Component {
             value={birthDate}
             placeholder="Birth Date"
           />
+          <RadioButtons currentValue={gender} onPress={(value) => this.onRadioPress(value)}/>
           <Button
             onPress={this.onPressButton}
             text="Save"
