@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Input from "./components/Input";
+import Button from "./components/Button";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,20 +15,28 @@ export default class App extends React.Component {
   onChangeBMI = (value) => {
     this.setState({BMI: value});
   };
+
+  onPressButton = () => {
+    const { BMI } = this.state;
+    console.log(BMI);
+  };
   render() {
     const { BMI } = this.state;
     return (
       <View style={styles.container}>
         <Text style={{fontSize: 30}}>{BMI}</Text>
 
-        <View style={styles.inputWrapper}>
-          <Text style={styles.label}>BMI</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={this.onChangeBMI}
-            value={BMI}
-          />
-        </View>
+        <Input
+          onChangeText={this.onChangeBMI}
+          label="BMI"
+          keyboardType="numeric"
+          value={this.state.BMI}
+          placeholder="Placeholder"
+        />
+        <Button
+          onPress={this.onPressButton}
+          text="ADD WEIGHT"
+        />
       </View>
     );
   }
@@ -40,18 +50,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 20
   },
-  inputWrapper: {
-    width: '100%'
-  },
-  input: {
-    height: 40,
-    width: '100%',
-    borderBottomWidth: 3,
-    borderColor: '#0080ff',
-    borderRadius: 3
-  },
-  label: {
-    color: '#0080ff',
-    fontWeight: 'bold'
-  }
 });
