@@ -43,7 +43,7 @@ class WeightScreen extends Component {
   renderItem = ({ item }) => {
     return (
       <WeightRow
-        value={item.weight}
+        weight={item.weight}
         date={item.date}
         onEditItem={() => this.onEditItem(item.id, {weight: item.weight, date: item.date})}
         onRemoveItem={() => this.onRemoveItem(item.id)}
