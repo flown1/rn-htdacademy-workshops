@@ -8,7 +8,7 @@ const Input = (props) => {
       <TextInput
         style={styles.input}
         onChangeText={props.onChangeText}
-        value={props.value}
+        value={props.weight}
         keyboardType={props.keyboardType}
         {...props}
       />

@@ -11,9 +11,9 @@ class WeightScreen extends Component {
     this.state = {
       BMI: '',
       weights: [
-        {id: 1, value: 'asdad', date: '12.02.1999'},
-        {id: 2, value: 'asdad2', date: '12.04.1999'},
-        {id: 3, value: 'asdad3', date: '12.03.1999'}
+        {id: 1, weight: '90', date: '12.08.2013'},
+        {id: 2, weight: '64', date: '05.08.2012'},
+        {id: 3, weight: '120', date: '15.08.2013'}
       ]
     }
   }
@@ -21,27 +21,31 @@ class WeightScreen extends Component {
   onChangeBMI = (value) => {
     this.setState({BMI: value});
     console.log(this.state.BMI);
+
   };
 
   onPressButton = () => {
     const { BMI } = this.state;
     console.log(BMI);
+    this.props.navigation.navigate('AddWeightScreen', {test: 'testtest'})
   };
 
   onRemoveItem = (id) => {
     console.log("removing" + id);
   };
 
-  onEditItem = (id) => {
+  onEditItem = (id, item) => {
     console.log("editing" + id);
+    this.props.navigation.navigate('AddWeightScreen', item)
+
   };
 
   renderItem = ({ item }) => {
     return (
       <WeightRow
-        value={item.value}
+        value={item.weight}
         date={item.date}
-        onEditItem={() => this.onEditItem(item.id)}
+        onEditItem={() => this.onEditItem(item.id, {weight: item.weight, date: item.date})}
         onRemoveItem={() => this.onRemoveItem(item.id)}
       />
     );

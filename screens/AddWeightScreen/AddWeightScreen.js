@@ -12,6 +12,11 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 
 class AddWeightScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = this.getDate(props);
+  }
   state = {
     weight: '90',
     date: new Date()
@@ -22,7 +27,8 @@ class AddWeightScreen extends Component {
   };
 
   onChangeDate = (date) => {
-    this.setState({date: date})
+    console.log('trigger:',date);
+    this.setState({date})
   };
 
   onPressButton = () => {
@@ -41,8 +47,28 @@ class AddWeightScreen extends Component {
     });
   };
 
+  getDate = (nextProps, prevState) => {
+    const {state} = nextProps.navigation;
+    if (state.params.date) {
+      console.log(state);
+      const properDate = state.params.date.split('.').reverse().join('-');
+
+      if (state && state.params) {
+        return ({
+          weight: state.params.weight,
+          date: new Date(properDate),
+        })
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const { weight, date } = this.state;
+    console.log('body date:', date);
     const datePicker = Platform.OS === 'android'
       ? <Button
         onPress={this.handleOpenDatePicker}

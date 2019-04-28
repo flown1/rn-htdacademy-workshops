@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 const WeightRow = (props) => {
   return (
     <View style={styles.weightRow}>
-      <Text style={styles.weightValue}>{props.value}</Text>
+      <Text style={styles.weightValue}>{props.weight}</Text>
       <Text style={styles.weightDate}>{props.date}</Text>
       <TouchableOpacity onPress={() => props.onEditItem(props.id)} style={styles.iconWrapper}>
         <Ionicons name="md-create" size={16} color="gray"/>
