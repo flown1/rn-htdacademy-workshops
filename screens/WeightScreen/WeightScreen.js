@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {AsyncStorage, FlatList, StyleSheet, Text, View} from 'react-native';
 import WeightRow from "../../components/WeightRow";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -11,13 +11,31 @@ class WeightScreen extends Component {
     this.state = {
       BMI: '',
       weights: [
-        {id: 1, weight: '90', date: '12.08.2013'},
-        {id: 2, weight: '64', date: '05.08.2012'},
-        {id: 3, weight: '120', date: '15.08.2013'}
+        {id: 1, weight: '90', date: new Date()},
+        {id: 2, weight: '64', date: new Date()},
+        {id: 3, weight: '120', date: new Date()}
       ]
     }
   }
 
+  componentDidMount() {
+    // this.loadWeights();
+  }
+  updateScreenData = () => {
+    this.loadWeights();
+  };
+  loadWeights = async () => {
+    try {
+      let data = await AsyncStorage._getItem('root');
+      data = data ? JSON.parse(data) : [];
+
+      this.setState({
+        weights: data
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  };
   onChangeBMI = (value) => {
     this.setState({BMI: value});
     console.log(this.state.BMI);
@@ -25,9 +43,9 @@ class WeightScreen extends Component {
   };
 
   onPressButton = () => {
-    const { BMI } = this.state;
+    const { BMI, weights } = this.state;
     console.log(BMI);
-    this.props.navigation.navigate('AddWeightScreen', {test: 'testtest'})
+    this.props.navigation.navigate('AddWeightScreen', { weights: weights })
   };
 
   onRemoveItem = (id) => {

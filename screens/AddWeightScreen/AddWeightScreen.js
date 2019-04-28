@@ -4,7 +4,7 @@ import {
   Text,
   View,
   DatePickerAndroid,
-  DatePickerIOS,
+  DatePickerIOS, AsyncStorage,
 } from 'react-native';
 import { Platform } from 'expo-core';
 
@@ -22,6 +22,17 @@ class AddWeightScreen extends Component {
     date: new Date()
   };
 
+  saveNewWeights = async (weight, date) => {
+    const weights = this.props.navigation.getParam('weights', {});
+    weights.push({id: new Date().now(), weight, date});
+    const stringifiedWeights = JSON.stringify(weights);
+    try {
+      AsyncStorage.setItem('root', stringifiedWeights)
+    } catch(error) {
+      console.log(error);
+    }
+  };
+
   onChangeWeight = (weight) => {
     this.setState({weight: weight})
   };
@@ -32,6 +43,7 @@ class AddWeightScreen extends Component {
   };
 
   onPressButton = () => {
+    // this.saveNewWeights(weight, date);
     console.log(this.state);
   };
 
@@ -49,14 +61,14 @@ class AddWeightScreen extends Component {
 
   getDate = (nextProps, prevState) => {
     const {state} = nextProps.navigation;
-    if (state.params.date) {
+    if (state.params.date && state.params.weight) {
       console.log(state);
-      const properDate = state.params.date.split('.').reverse().join('-');
+      const properDate = state.params.date;
 
       if (state && state.params) {
         return ({
           weight: state.params.weight,
-          date: new Date(properDate),
+          date: new Date(properDate) || new Date(),
         })
       } else {
         return null;
