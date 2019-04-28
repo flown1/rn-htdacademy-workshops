@@ -17,21 +17,25 @@ class AddWeightScreen extends Component {
 
     this.state = this.getDate(props);
   }
-  state = {
-    weight: '90',
-    date: new Date()
-  };
 
-  saveNewWeights = async (weight, date) => {
-    const weights = this.props.navigation.getParam('weights', {});
-    weights.push({id: new Date().now(), weight, date});
+  saveNewWeights =  async (weight, date) => {
+    const weights = this.props.navigation.getParam('weights', [])
+    weights.push({
+      id: new Date().valueOf(),
+      value: weight,
+      date,
+    });
+
     const stringifiedWeights = JSON.stringify(weights);
     try {
-      AsyncStorage.setItem('root', stringifiedWeights)
-    } catch(error) {
-      console.log(error);
+      await AsyncStorage.setItem('root', stringifiedWeights);
+      const updateWeightScreenFunction = this.props.navigation.getParam('update', () => {});
+      updateWeightScreenFunction()
+    } catch(err) {
+      console.error('err', err)
     }
   };
+
 
   onChangeWeight = (weight) => {
     this.setState({weight: weight})
@@ -43,7 +47,9 @@ class AddWeightScreen extends Component {
   };
 
   onPressButton = () => {
-    // this.saveNewWeights(weight, date);
+    const { weight, date } = this.state;
+    this.saveNewWeights(weight, date);
+
     console.log(this.state);
   };
 

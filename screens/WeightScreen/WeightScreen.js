@@ -19,10 +19,26 @@ class WeightScreen extends Component {
   }
 
   componentDidMount() {
-    // this.loadWeights();
+    this.loadWeights()
   }
+
+  loadWeights = async () => {
+    try {
+      let data = await AsyncStorage.getItem('root')
+      data = data ? JSON.parse(data) : []
+      this.setState({
+        weights: data.map((weights) => {
+          weights.date = new Date(weights.date)
+          return weights
+        }),
+      })
+    } catch (err) {
+      console.error('coś poszło nie tak',err)
+    }
+  };
+
   updateScreenData = () => {
-    this.loadWeights();
+    this.loadWeights()
   };
   loadWeights = async () => {
     try {
@@ -45,7 +61,7 @@ class WeightScreen extends Component {
   onPressButton = () => {
     const { BMI, weights } = this.state;
     console.log(BMI);
-    this.props.navigation.navigate('AddWeightScreen', { weights: weights })
+    this.props.navigation.navigate("AddWeightScreen", { adding: true, update: this.updateScreenData, weights: this.state.weights});
   };
 
   onRemoveItem = (id) => {
